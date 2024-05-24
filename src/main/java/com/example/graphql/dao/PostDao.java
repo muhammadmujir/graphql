@@ -1,6 +1,7 @@
 package com.example.graphql.dao;
 
 import com.example.graphql.model.Post;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,17 +14,17 @@ public class PostDao {
         this.posts = posts;
     }
 
-    public List<Post> getRecentPosts(int count, int offset) {
-        return posts.stream()
+    public Mono<List<Post>> getRecentPosts(int count, int offset) {
+        return Mono.fromSupplier(() -> posts.stream()
                 .skip(offset)
                 .limit(count)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
-    public List<Post> getAuthorPosts(String author) {
-        return posts.stream()
+    public Mono<List<Post>> getAuthorPosts(String author) {
+        return Mono.fromSupplier(() -> posts.stream()
                 .filter(post -> author.equals(post.getAuthorId()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     public void savePost(Post post) {

@@ -6,6 +6,7 @@ import com.example.graphql.model.Post;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class AuthorController {
     }
 
     @SchemaMapping
-    public List<Post> posts(Author author) {
+    public Mono<List<Post>> posts(Author author) {
         return postDao.getAuthorPosts(author.getId());
     }
 }

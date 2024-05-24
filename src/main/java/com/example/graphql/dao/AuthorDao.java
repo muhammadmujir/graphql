@@ -1,6 +1,7 @@
 package com.example.graphql.dao;
 
 import com.example.graphql.model.Author;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -11,10 +12,10 @@ public class AuthorDao {
         this.authors = authors;
     }
 
-    public Author getAuthor(String id) {
-        return authors.stream()
+    public Mono<Author> getAuthor(String id) {
+        return Mono.fromSupplier(() -> authors.stream()
                 .filter(author -> id.equals(author.getId()))
                 .findFirst()
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(RuntimeException::new));
     }
 }

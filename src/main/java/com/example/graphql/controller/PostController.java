@@ -10,6 +10,7 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.UUID;
@@ -26,17 +27,17 @@ public class PostController {
     }
 
     @QueryMapping
-    public List<Post> recentPosts(@Argument int count, @Argument int offset) {
+    public Mono<List<Post>> recentPosts(@Argument int count, @Argument int offset) {
         return postDao.getRecentPosts(count, offset);
     }
 
     @SchemaMapping
-    public Author author(Post post) {
+    public Mono<Author> author(Post post) {
         return authorDao.getAuthor(post.getAuthorId());
     }
 
     @SchemaMapping(typeName="Post", field="first_author")
-    public Author getFirstAuthor(Post post) {
+    public Mono<Author> getFirstAuthor(Post post) {
         return authorDao.getAuthor(post.getAuthorId());
     }
 
